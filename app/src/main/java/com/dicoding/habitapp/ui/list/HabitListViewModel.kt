@@ -10,6 +10,8 @@ import com.dicoding.habitapp.data.Habit
 import com.dicoding.habitapp.data.HabitRepository
 import com.dicoding.habitapp.utils.Event
 import com.dicoding.habitapp.utils.HabitSortType
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class HabitListViewModel(private val habitRepository: HabitRepository) : ViewModel() {
 
@@ -39,7 +41,9 @@ class HabitListViewModel(private val habitRepository: HabitRepository) : ViewMod
         _undo.value = Event(habit)
     }
 
-    fun insert(habit: Habit) {
-        habitRepository.insertHabit(habit)
+    suspend fun insertHabit(habit: Habit) {
+        withContext(Dispatchers.IO) {
+            habitRepository.insertHabit(habit)
+        }
     }
 }
